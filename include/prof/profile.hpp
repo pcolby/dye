@@ -6,6 +6,13 @@
 #ifndef __PROFILE_PROFILE_HPP__
 #define __PROFILE_PROFILE_HPP__
 
-/// @todo
+/// @todo Lots
 
-#endif
+#define PROFILE_MACRO_UUID 4029617a-ebbc-11e3-a02d-080027989a56
+
+#define PROFILE_BEGIN_SCOPE(...) \
+    int todo_raii_object##PROFILE_MACRO_UUID=0; \
+    todo_raii_object##PROFILE_MACRO_UUID++;   \
+    /// @todo Begin scope.
+
+#endif // __PROFILE_PROFILE_HPP__

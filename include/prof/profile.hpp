@@ -9,13 +9,16 @@
 /// @todo Lots
 
 class basic_profiler {
-    void begin();
-    void end();
-    void reset();
+
+public:
+    void begin() const throw() {}
+    void end()   const throw() {}
+    void reset() const throw() {}
+
 };
 
 template<class Decorant>
-class profiler_a {
+class profiler_a : Decorant {
 
 public:
     static profiler_a * get_instance() { return instance; }

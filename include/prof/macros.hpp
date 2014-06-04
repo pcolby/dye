@@ -11,7 +11,7 @@
 #define PROFILE_BEGIN_SCOPE(...) \
     int todo_raii_object##PROFILE_MACRO_UUID=0; \
     todo_raii_object##PROFILE_MACRO_UUID++;   \
-    profiler::get_instance(); \
+    profiler::get_instance()->begin(); \
     /// @todo Begin scope.
 
 #endif // __PROFILE_MACROS_HPP__

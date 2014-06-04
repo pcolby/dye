@@ -8,6 +8,8 @@
 
 /// @todo Lots
 
+#include <iostream>
+
 class basic_profiler {
 
 public:
@@ -15,6 +17,19 @@ public:
     void end()   const throw() {}
     void reset() const throw() {}
 
+};
+
+template<class Decorant>
+class tracer : Decorant {
+
+public:
+    static tracer * get_instance() { return instance; }
+    void begin() { std::cout << "begin" << std::endl; Decorant::begin(); }
+    void end()   { std::cout << "end"   << std::endl; Decorant::end();   }
+    void reset() { std::cout << "reset" << std::endl; Decorant::reset(); }
+
+private:
+    static tracer * instance;
 };
 
 template<class Decorant>

@@ -4,7 +4,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <prof/profile.hpp>
-typedef profiler_a<profiler_b<basic_profiler> > profiler;
+typedef profiler_a<profiler_b<tracer<basic_profiler> > > profiler;
 #include <prof/macros.hpp>
 
 template<> profiler * profiler::instance(new profiler);

@@ -8,11 +8,20 @@
 
 /// @todo Lots
 
+class basic_profiler {
+    void begin();
+    void end();
+    void reset();
+};
+
 template<class Decorant>
 class profiler_a {
 
 public:
     static profiler_a * get_instance() { return instance; }
+    void begin() { Decorant::begin(); }
+    void end()   { Decorant::end();   }
+    void reset() { Decorant::reset(); }
 
 private:
     static profiler_a * instance;
@@ -23,13 +32,18 @@ class profiler_b : Decorant {
 
 public:
     static profiler_b * get_instance() { return instance; }
+    void begin() { Decorant::begin(); }
+    void end()   { Decorant::end();   }
+    void reset() { Decorant::reset(); }
 
 private:
     static profiler_b * instance;
 };
 
-typedef profiler_a<profiler_b<int> > profiler;
+// This typedef would be done by the application, prior to including this header.
+typedef profiler_a<profiler_b<basic_profiler> > profiler;
 
+// This typedef would be done by the application.
 template<> profiler * profiler::instance(new profiler);
 
 #define PROFILE_MACRO_UUID 4029617a-ebbc-11e3-a02d-080027989a56

@@ -13,7 +13,8 @@
 class basic_profiler {
 
 public:
-    void begin() const throw() {}
+    void begin(const std::string &, const int, const std::string &,
+               const std::string &) const throw() {}
     void end()   const throw() {}
     void reset() const throw() {}
 
@@ -24,7 +25,14 @@ class tracer : Decorant {
 
 public:
     static tracer * get_instance() { return instance; }
-    void begin() { std::cout << "begin" << std::endl; Decorant::begin(); }
+    void begin(const std::string &file, const int line,
+               const std::string &function, const std::string &section)
+    {
+        std::cout << file << ':' << line << ':' << function
+                  << ' ' << section << std::endl;
+        Decorant::begin(file, line, function, section);
+    }
+
     void end()   { std::cout << "end"   << std::endl; Decorant::end();   }
     void reset() { std::cout << "reset" << std::endl; Decorant::reset(); }
 
@@ -37,7 +45,14 @@ class profiler_a : Decorant {
 
 public:
     static profiler_a * get_instance() { return instance; }
-    void begin() { Decorant::begin(); }
+
+    void begin(const std::string &file, const int line,
+               const std::string &function,
+               const std::string &section = std::string())
+    {
+        Decorant::begin(file, line, function, section);
+    }
+
     void end()   { Decorant::end();   }
     void reset() { Decorant::reset(); }
 
@@ -50,7 +65,13 @@ class profiler_b : Decorant {
 
 public:
     static profiler_b * get_instance() { return instance; }
-    void begin() { Decorant::begin(); }
+
+    void begin(const std::string &file, const int line,
+               const std::string &function, const std::string &section)
+    {
+        Decorant::begin(file, line, function, section);
+    }
+
     void end()   { Decorant::end();   }
     void reset() { Decorant::reset(); }
 

@@ -28,9 +28,24 @@ Type factorial_recursive(const Type n)
     return (n == 1) ? 1 : n * factorial_recursive(n-1);
 }
 
+class A {
+public:
+    void B(int) {
+        PROFILE_BEGIN_SCOPE();
+    }
+
+    void B(double) {
+        PROFILE_BEGIN_SCOPE();
+    }
+};
+
 int main(int, char **)
 {
     factorial_iterative<int>(10);
     factorial_recursive<int>(10);
+
+    A a;
+    a.B(123);
+    a.B(123.0);
     return 0;
 }

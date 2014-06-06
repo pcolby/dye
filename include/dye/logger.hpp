@@ -21,26 +21,44 @@ public:
     void begin(const std::string &file, const int line,
                const std::string &function, const std::string &section)
     {
-        /// @todo  Check for NULL.
-        *output_stream
-            << file << ':' << line << ':' << function
-            << ' ' << section << std::endl;
+        if (output_stream) {
+            *output_stream
+                << file << ':' << line << ':' << function
+                << ' ' << section << std::endl;
+        }
         Base::begin(file, line, function, section);
     }
 
     /// @todo  Check for NULL.
-    void end()   { *output_stream << "end"   << std::endl; Base::end();   }
-    void reset() { *output_stream << "reset" << std::endl; Base::reset(); }
-
-    void set_output_stream(std::ostream * const stream)
+    void end()
     {
+        if (output_stream) {
+            *output_stream << "end"   << std::endl; Base::end();
+        }
+        Base::end();
+    }
+
+    void reset()
+    {
+        if (output_stream) {
+            *output_stream << "reset" << std::endl; Base::reset();
+        }
+        Base::reset();
+    }
+
+    std::ostream * set_output_stream(std::ostream * const stream)
+    {
+        std::ostream * const previous_stream = output_stream;
         output_stream = stream;
+        return previous_stream;
     }
 
 protected:
     std::ostream * output_stream;
 
-    log_decorator() : output_stream(&std::clog) { }
+    log_decorator() : output_stream(&std::clog)
+    {
+    }
 
 private:
     static log_decorator * instance;
@@ -51,4 +69,4 @@ typedef log_decorator<basic_tracer> logger;
 
 }
 
-#endif // __PROFILE_PROFILE_HPP__
+#endif

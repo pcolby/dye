@@ -23,6 +23,5 @@
     int todo_raii_object##DYE_MACRO_UUID=0; \
     todo_raii_object##DYE_MACRO_UUID++;   \
     dye::dye_type::get_instance()->begin(__FILE__, __LINE__, __PRETTY_FUNCTION__, ##__VA_ARGS__); \
-    /// @todo Begin scope.
 
 #endif

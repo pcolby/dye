@@ -20,6 +20,8 @@ public:
     void end()   const throw() {}
     void reset() const throw() {}
 
+protected:
+    basic_profiler() throw() {}
 };
 
 template<class Base>
@@ -71,6 +73,9 @@ public:
 
     void end()   { Base::end();   }
     void reset() { Base::reset(); }
+
+protected:
+    profiler() { }
 
 private:
     static profiler * instance;

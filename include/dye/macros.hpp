@@ -6,6 +6,8 @@
 #ifndef __DYE_MACROS_HPP__
 #define __DYE_MACROS_HPP__
 
+#include "scope_guard.hpp"
+
 /**
  * @brief UUID to protect against variable name clashes.
  *
@@ -23,16 +25,16 @@
 #define DYE_MACRO_UUID 4029617a-ebbc-11e3-a02d-080027989a56
 
 #define DYE_BEGIN_SCOPE(...) \
-    int todo_raii_object##DYE_MACRO_UUID=0; \
+    dye::scope_guard dye_scope_guard##DYE_MACRO_UUID=0; \
     dye::dye_type::get_instance()->begin(__FILE__, __LINE__, __PRETTY_FUNCTION__, ##__VA_ARGS__); \
-    todo_raii_object##DYE_MACRO_UUID++;
+    dye_scope_guard##DYE_MACRO_UUID++;
 
 #define DYE_BEGIN_SECTION(...) \
     dye::dye_type::get_instance()->begin(__FILE__, __LINE__, __PRETTY_FUNCTION__, ##__VA_ARGS__); \
-    todo_raii_object##DYE_MACRO_UUID++;
+    dye_scope_guard##DYE_MACRO_UUID++;
 
 #define DYE_END_SECTION() \
     dye::dye_type::get_instance()->end(); \
-    todo_raii_object##DYE_MACRO_UUID--;
+    dye_scope_guard##DYE_MACRO_UUID--;
 
 #endif

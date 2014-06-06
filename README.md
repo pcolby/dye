@@ -17,7 +17,6 @@ make
 
 * Consistent timestamping.
 * Section type enum (eg code vs data-store sections, a la New Relic).
-* Implement RAII auto-ender.
 * Implement dye::profile_decorator.
 * Add examples:
 ** basic-logging[-disabled]

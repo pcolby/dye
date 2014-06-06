@@ -40,6 +40,22 @@ public:
     void B(double) {
         DYE_BEGIN_SCOPE();
     }
+
+    void C() {
+        DYE_BEGIN_SCOPE();
+
+        DYE_BEGIN_SECTION("first loop");
+        for (size_t i = 0; i < 10; ++i) {
+
+        }
+        DYE_END_SECTION()
+
+        DYE_BEGIN_SECTION("second loop");
+        for (size_t i = 0; i < 10; ++i) {
+
+        }
+        DYE_END_SECTION()
+    }
 };
 
 int main(int, char **)
@@ -54,5 +70,7 @@ int main(int, char **)
     A a;
     a.B(123);
     a.B(123.0);
+    a.C();
+    a.C();
     return 0;
 }

@@ -15,10 +15,10 @@ template<> dye::dye_type * dye::dye_type::instance(new dye::dye_type);
 template<typename Type>
 Type factorial_iterative(const Type n)
 {
-    PROFILE_BEGIN_SCOPE()
+    DYE_BEGIN_SCOPE()
     Type result = 1;
     for (Type i = n; i > 1; --i) {
-        PROFILE_BEGIN_SCOPE("multiplication")
+        DYE_BEGIN_SCOPE("multiplication")
         result *= i;
     }
     return result;
@@ -27,18 +27,18 @@ Type factorial_iterative(const Type n)
 template<typename Type>
 Type factorial_recursive(const Type n)
 {
-    PROFILE_BEGIN_SCOPE()
+    DYE_BEGIN_SCOPE()
     return (n == 1) ? 1 : n * factorial_recursive(n-1);
 }
 
 class A {
 public:
     void B(int) {
-        PROFILE_BEGIN_SCOPE();
+        DYE_BEGIN_SCOPE();
     }
 
     void B(double) {
-        PROFILE_BEGIN_SCOPE();
+        DYE_BEGIN_SCOPE();
     }
 };
 

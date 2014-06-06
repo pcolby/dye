@@ -15,6 +15,7 @@ make
 
 ## To do
 
+* Implement RAII auto-ender.
 * Implement dye::profile_decorator.
 * Add examples:
 ** basic-logging[-disabled]

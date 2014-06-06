@@ -16,34 +16,49 @@ template<class Base>
 class log_decorator : public Base {
 
 public:
-    static log_decorator * get_instance() { return instance; }
+
+    static log_decorator * get_instance()
+    {
+        return instance;
+    }
 
     void begin(const std::string &file, const int line,
                const std::string &function, const std::string &section)
     {
         if (output_stream) {
             *output_stream
-                << file << ':' << line << ':' << function
+                << file << ':' << line << ':';
+            for (size_t depth = current_depth; depth > 0; --depth) {
+                *output_stream << indent_string;
+            }
+            *output_stream
+                << function
                 << ' ' << section << std::endl;
         }
+        current_depth++;
         Base::begin(file, line, function, section);
     }
 
     /// @todo  Check for NULL.
     void end()
     {
-        if (output_stream) {
-            *output_stream << "end"   << std::endl; Base::end();
+        if (current_depth > 0) {
+            current_depth--;
         }
         Base::end();
     }
 
     void reset()
     {
-        if (output_stream) {
-            *output_stream << "reset" << std::endl; Base::reset();
-        }
+        current_depth = 0;
         Base::reset();
+    }
+
+    std::string set_indent_string(const std::string &new_indent)
+    {
+        const std::string previous_indent = indent_string;
+        indent_string = new_indent;
+        return previous_indent;
     }
 
     std::ostream * set_output_stream(std::ostream * const stream)
@@ -54,9 +69,14 @@ public:
     }
 
 protected:
+    size_t current_depth;
+    std::string indent_string;
     std::ostream * output_stream;
 
-    log_decorator() : output_stream(&std::clog)
+    log_decorator() :
+        current_depth(0),
+        indent_string(" "),
+        output_stream(&std::clog)
     {
     }
 

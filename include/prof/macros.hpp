@@ -11,7 +11,7 @@
 #define PROFILE_BEGIN_SCOPE(...) \
     int todo_raii_object##PROFILE_MACRO_UUID=0; \
     todo_raii_object##PROFILE_MACRO_UUID++;   \
-    trace::profiler::get_instance()->begin(__FILE__, __LINE__, __PRETTY_FUNCTION__, ##__VA_ARGS__); \
+    trace::tracer_type::get_instance()->begin(__FILE__, __LINE__, __PRETTY_FUNCTION__, ##__VA_ARGS__); \
     /// @todo Begin scope.
 
 #endif // __PROFILE_MACROS_HPP__

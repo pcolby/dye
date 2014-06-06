@@ -5,11 +5,11 @@
 
 #include <prof/profile.hpp>
 namespace trace {
-typedef profiler_a<profiler_b<tracer<basic_profiler> > > profiler;
+typedef profiler<tracer<basic_profiler> > tracer_type;
 }
 #include <prof/macros.hpp>
 
-template<> trace::profiler * trace::profiler::instance(new trace::profiler);
+template<> trace::tracer_type * trace::tracer_type::instance(new trace::tracer_type);
 
 template<typename Type>
 Type factorial_iterative(const Type n)

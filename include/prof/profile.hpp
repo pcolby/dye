@@ -43,10 +43,10 @@ private:
 };
 
 template<class Decorant>
-class profiler_a : Decorant {
+class profiler : Decorant {
 
 public:
-    static profiler_a * get_instance() { return instance; }
+    static profiler * get_instance() { return instance; }
 
     void begin(const std::string &file, const int line,
                const std::string &function,
@@ -59,26 +59,7 @@ public:
     void reset() { Decorant::reset(); }
 
 private:
-    static profiler_a * instance;
-};
-
-template<class Decorant>
-class profiler_b : Decorant {
-
-public:
-    static profiler_b * get_instance() { return instance; }
-
-    void begin(const std::string &file, const int line,
-               const std::string &function, const std::string &section)
-    {
-        Decorant::begin(file, line, function, section);
-    }
-
-    void end()   { Decorant::end();   }
-    void reset() { Decorant::reset(); }
-
-private:
-    static profiler_b * instance;
+    static profiler * instance;
 };
 
 }

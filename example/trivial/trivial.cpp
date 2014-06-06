@@ -43,8 +43,12 @@ public:
 
 int main(int, char **)
 {
+    trace::tracer_type::get_instance()->set_output_stream(&std::cerr);
+
     factorial_iterative<int>(10);
     factorial_recursive<int>(10);
+
+    trace::tracer_type::get_instance()->set_output_stream(&std::cout);
 
     A a;
     a.B(123);

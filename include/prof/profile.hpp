@@ -22,8 +22,8 @@ public:
 
 };
 
-template<class Decorant>
-class tracer : public Decorant {
+template<class Base>
+class tracer : public Base {
 
 public:
     static tracer * get_instance() { return instance; }
@@ -35,12 +35,12 @@ public:
         *output_stream
             << file << ':' << line << ':' << function
             << ' ' << section << std::endl;
-        Decorant::begin(file, line, function, section);
+        Base::begin(file, line, function, section);
     }
 
     /// @todo  Check for NULL.
-    void end()   { *output_stream << "end"   << std::endl; Decorant::end();   }
-    void reset() { *output_stream << "reset" << std::endl; Decorant::reset(); }
+    void end()   { *output_stream << "end"   << std::endl; Base::end();   }
+    void reset() { *output_stream << "reset" << std::endl; Base::reset(); }
 
     void set_output_stream(std::ostream * const stream)
     {
@@ -56,8 +56,8 @@ private:
     static tracer * instance;
 };
 
-template<class Decorant>
-class profiler : public Decorant {
+template<class Base>
+class profiler : public Base {
 
 public:
     static profiler * get_instance() { return instance; }
@@ -66,11 +66,11 @@ public:
                const std::string &function,
                const std::string &section = std::string())
     {
-        Decorant::begin(file, line, function, section);
+        Base::begin(file, line, function, section);
     }
 
-    void end()   { Decorant::end();   }
-    void reset() { Decorant::reset(); }
+    void end()   { Base::end();   }
+    void reset() { Base::reset(); }
 
 private:
     static profiler * instance;

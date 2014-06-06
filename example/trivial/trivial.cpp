@@ -3,13 +3,13 @@
 //       (See accompanying file LICENSE.md or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <prof/profile.hpp>
-namespace trace {
-typedef profiler<logger> tracer_type;
+#include <dye/profile.hpp>
+namespace dye {
+typedef profiler<logger> dye_type;
 }
-#include <prof/macros.hpp>
+#include <dye/macros.hpp>
 
-template<> trace::tracer_type * trace::tracer_type::instance(new trace::tracer_type);
+template<> dye::dye_type * dye::dye_type::instance(new dye::dye_type);
 
 template<typename Type>
 Type factorial_iterative(const Type n)
@@ -43,12 +43,12 @@ public:
 
 int main(int, char **)
 {
-    trace::tracer_type::get_instance()->set_output_stream(&std::cerr);
+    dye::dye_type::get_instance()->set_output_stream(&std::cerr);
 
     factorial_iterative<int>(10);
     factorial_recursive<int>(10);
 
-    trace::tracer_type::get_instance()->set_output_stream(&std::cout);
+    dye::dye_type::get_instance()->set_output_stream(&std::cout);
 
     A a;
     a.B(123);

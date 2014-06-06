@@ -10,7 +10,7 @@
 
 #include <iostream>
 
-namespace trace {
+namespace dye {
 
 class basic_tracer {
 

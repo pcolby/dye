@@ -12,7 +12,7 @@
 
 namespace trace {
 
-class basic_profiler {
+class basic_tracer {
 
 public:
     void begin(const std::string &, const int, const std::string &,
@@ -21,7 +21,7 @@ public:
     void reset() const throw() {}
 
 protected:
-    basic_profiler() throw() {}
+    basic_tracer() throw() {}
 };
 
 template<class Base>
@@ -58,7 +58,7 @@ private:
     static log_decorator * instance;
 };
 
-typedef log_decorator<basic_profiler> logger;
+typedef log_decorator<basic_tracer> logger;
 
 template<class Base>
 class profiler : public Base {

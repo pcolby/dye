@@ -16,6 +16,9 @@
  *
  * There is no need for you to use the DYE_MACRO_UUID macro in your own code,
  * and if doing so you are probably doing something wrong.
+ *
+ * Note, there's nothing special about this UUID - it was generated via the
+ * OSSP uuid command-line tool.  It may be replaced at any time.
  */
 #define DYE_MACRO_UUID 4029617a-ebbc-11e3-a02d-080027989a56
 

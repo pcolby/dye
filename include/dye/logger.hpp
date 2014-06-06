@@ -3,26 +3,14 @@
 //       (See accompanying file LICENSE.md or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef __PROFILE_PROFILE_HPP__
-#define __PROFILE_PROFILE_HPP__
+#ifndef __DYE_LOGGER_HPP__
+#define __DYE_LOGGER_HPP__
 
-/// @todo Lots
+#include "basic_dye.hpp"
 
 #include <iostream>
 
 namespace dye {
-
-class basic_tracer {
-
-public:
-    void begin(const std::string &, const int, const std::string &,
-               const std::string &) const throw() {}
-    void end()   const throw() {}
-    void reset() const throw() {}
-
-protected:
-    basic_tracer() throw() {}
-};
 
 template<class Base>
 class log_decorator : public Base {
@@ -56,32 +44,10 @@ protected:
 
 private:
     static log_decorator * instance;
+
 };
 
 typedef log_decorator<basic_tracer> logger;
-
-template<class Base>
-class profiler : public Base {
-
-public:
-    static profiler * get_instance() { return instance; }
-
-    void begin(const std::string &file, const int line,
-               const std::string &function,
-               const std::string &section = std::string())
-    {
-        Base::begin(file, line, function, section);
-    }
-
-    void end()   { Base::end();   }
-    void reset() { Base::reset(); }
-
-protected:
-    profiler() { }
-
-private:
-    static profiler * instance;
-};
 
 }
 

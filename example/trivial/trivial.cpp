@@ -3,9 +3,10 @@
 //       (See accompanying file LICENSE.md or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dye/profile.hpp>
+#include <dye/logger.hpp>
+#include <dye/profiler.hpp>
 namespace dye {
-typedef profiler<logger> dye_type;
+typedef profile_decorator<logger> dye_type;
 }
 #include <dye/macros.hpp>
 

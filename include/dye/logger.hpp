@@ -39,7 +39,6 @@ public:
         Base::begin(file, line, function, section);
     }
 
-    /// @todo  Check for NULL.
     void end()
     {
         if (current_depth > 0) {

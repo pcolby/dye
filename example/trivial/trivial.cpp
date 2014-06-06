@@ -4,10 +4,12 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <prof/profile.hpp>
+namespace trace {
 typedef profiler_a<profiler_b<tracer<basic_profiler> > > profiler;
+}
 #include <prof/macros.hpp>
 
-template<> profiler * profiler::instance(new profiler);
+template<> trace::profiler * trace::profiler::instance(new trace::profiler);
 
 template<typename Type>
 Type factorial_iterative(const Type n)

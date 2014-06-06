@@ -10,6 +10,8 @@
 
 #include <iostream>
 
+namespace trace {
+
 class basic_profiler {
 
 public:
@@ -78,5 +80,7 @@ public:
 private:
     static profiler_b * instance;
 };
+
+}
 
 #endif // __PROFILE_PROFILE_HPP__

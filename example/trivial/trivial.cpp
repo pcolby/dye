@@ -5,7 +5,7 @@
 
 #include <prof/profile.hpp>
 namespace trace {
-typedef profiler<tracer<basic_profiler> > tracer_type;
+typedef profiler<logger> tracer_type;
 }
 #include <prof/macros.hpp>
 

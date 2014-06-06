@@ -25,10 +25,10 @@ protected:
 };
 
 template<class Base>
-class tracer : public Base {
+class log_decorator : public Base {
 
 public:
-    static tracer * get_instance() { return instance; }
+    static log_decorator * get_instance() { return instance; }
 
     void begin(const std::string &file, const int line,
                const std::string &function, const std::string &section)
@@ -52,11 +52,13 @@ public:
 protected:
     std::ostream * output_stream;
 
-    tracer() : output_stream(&std::clog) { }
+    log_decorator() : output_stream(&std::clog) { }
 
 private:
-    static tracer * instance;
+    static log_decorator * instance;
 };
+
+typedef log_decorator<basic_profiler> logger;
 
 template<class Base>
 class profiler : public Base {

@@ -18,9 +18,10 @@ public:
 
     void begin(const std::string &file, const int line,
                const std::string &function,
-               const std::string &section = std::string())
+               const std::string &section = std::string(),
+               const operation_type operation = generic_operation)
     {
-        Base::begin(file, line, function, section);
+        Base::begin(file, line, function, section, operation);
     }
 
     void end()   { Base::end();   }

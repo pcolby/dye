@@ -10,11 +10,19 @@
 
 namespace dye {
 
+enum operation_type {
+    generic_operation,
+    datastore_create, ///< eg INSERT, SendMessage
+    datastore_read,   ///< eg SELECT, ReceiveMessage
+    datastore_update, ///< eg UPDATE, Reject/release
+    datastore_delete, ///< eg DELETE, Acknowledge / delete
+};
+
 class basic_tracer {
 
 public:
     void begin(const std::string &, const int, const std::string &,
-               const std::string &) const throw() {}
+               const std::string &, const operation_type) const throw() {}
 
     void end()   const throw() {}
 

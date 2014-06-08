@@ -23,7 +23,9 @@ public:
     }
 
     void begin(const std::string &file, const int line,
-               const std::string &function, const std::string &section)
+               const std::string &function,
+               const std::string &section = std::string(),
+               const operation_type operation = generic_operation)
     {
         if (output_stream) {
             *output_stream
@@ -36,7 +38,7 @@ public:
                 << ' ' << section << std::endl;
         }
         current_depth++;
-        Base::begin(file, line, function, section);
+        Base::begin(file, line, function, section, operation);
     }
 
     void end()

@@ -29,22 +29,22 @@ public:
 
     std::string get_call_graph()
     {
-        return "not yet implemented";
+        return "get_call_graph not yet implemented";
     }
 
     std::string get_flat_profile()
     {
-        return "not yet implemented";
+        return "get_flat_profile not yet implemented";
     }
 
-    void print_call_graph(std::ostream &ostream = std::clog)
+    void print_call_graph(std::ostream &output_stream = std::clog)
     {
-        ostream << get_call_graph() << std::endl;
+        output_stream << get_call_graph() << std::endl;
     }
 
-    void print_flat_profile(std::ostream &ostream = std::clog)
+    void print_flat_profile(std::ostream &output_stream = std::clog)
     {
-        ostream << get_flat_profile() << std::endl;
+        output_stream << get_flat_profile() << std::endl;
     }
 
 protected:

@@ -5,12 +5,13 @@
 
 #include <dye/logger.hpp>
 #include <dye/profiler.hpp>
-namespace dye {
-typedef profile_decorator<logger> dye_type;
-}
+namespace dye { typedef profile_decorator<logger> dye_type; }
 #include <dye/macros.hpp>
 
+#include <stdlib.h>
+
 template<> dye::dye_type * dye::dye_type::instance(new dye::dye_type);
+DYE_DECLARE_ATEXIT_FUNCTION(print_flat_profile);
 
 template<typename Type>
 Type factorial_iterative(const Type n)
@@ -60,6 +61,7 @@ public:
 
 int main(int, char **)
 {
+    DYE_REGISTER_ATEXIT_FUNCTION(print_flat_profile);
     dye::dye_type::get_instance()->set_output_stream(&std::cerr);
 
     factorial_iterative<int>(10);

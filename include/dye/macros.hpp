@@ -25,16 +25,24 @@
 #define DYE_MACRO_UUID 4029617a-ebbc-11e3-a02d-080027989a56
 
 #define DYE_BEGIN_SCOPE(...) \
-    dye::scope_guard dye_scope_guard##DYE_MACRO_UUID=0; \
+    dye::scope_guard dye_scope_guard_##DYE_MACRO_UUID=0; \
     dye::dye_type::get_instance()->begin(__FILE__, __LINE__, __PRETTY_FUNCTION__, ##__VA_ARGS__); \
-    dye_scope_guard##DYE_MACRO_UUID++;
+    dye_scope_guard_##DYE_MACRO_UUID++;
 
 #define DYE_BEGIN_SECTION(...) \
     dye::dye_type::get_instance()->begin(__FILE__, __LINE__, __PRETTY_FUNCTION__, ##__VA_ARGS__); \
-    dye_scope_guard##DYE_MACRO_UUID++;
+    dye_scope_guard_##DYE_MACRO_UUID++;
 
 #define DYE_END_SECTION() \
     dye::dye_type::get_instance()->end(); \
-    dye_scope_guard##DYE_MACRO_UUID--;
+    dye_scope_guard_##DYE_MACRO_UUID--;
+
+#define DYE_DECLARE_ATEXIT_FUNCTION(method, ...) \
+    void dye_##method##_atexit_##DYE_MACRO_UUID() { \
+        dye::dye_type::get_instance()->method(##__VA_ARGS__); \
+    }
+
+#define DYE_REGISTER_ATEXIT_FUNCTION(method) \
+    atexit(dye_##method##_atexit_##DYE_MACRO_UUID)
 
 #endif

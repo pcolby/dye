@@ -27,6 +27,26 @@ public:
     void end()   { Base::end();   }
     void reset() { Base::reset(); }
 
+    std::string get_call_graph()
+    {
+        return "not yet implemented";
+    }
+
+    std::string get_flat_profile()
+    {
+        return "not yet implemented";
+    }
+
+    void print_call_graph(std::ostream &ostream = std::clog)
+    {
+        ostream << get_call_graph() << std::endl;
+    }
+
+    void print_flat_profile(std::ostream &ostream = std::clog)
+    {
+        ostream << get_flat_profile() << std::endl;
+    }
+
 protected:
     profile_decorator() { }
 

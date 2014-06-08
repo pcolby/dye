@@ -50,7 +50,7 @@ public:
         }
         DYE_END_SECTION()
 
-        DYE_BEGIN_SECTION("second loop");
+        DYE_BEGIN_SECTION("second loop", dye::generic_operation);
         for (size_t i = 0; i < 10; ++i) {
 
         }

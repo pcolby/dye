@@ -6,6 +6,7 @@
 #include <dye/logger.hpp>
 #include <dye/profiler.hpp>
 namespace dye { typedef profile_decorator<logger> dye_type; }
+#include <dye/compiler_assist.hpp>
 #include <dye/macros.hpp>
 
 #include <stdlib.h>
@@ -16,7 +17,7 @@ DYE_DECLARE_ATEXIT_FUNCTION(print_flat_profile);
 template<typename Type>
 Type factorial_iterative(const Type n)
 {
-    DYE_BEGIN_SCOPE()
+    //DYE_BEGIN_SCOPE()
     Type result = 1;
     for (Type i = n; i > 1; --i) {
         DYE_BEGIN_SCOPE("multiplication")
@@ -28,18 +29,18 @@ Type factorial_iterative(const Type n)
 template<typename Type>
 Type factorial_recursive(const Type n)
 {
-    DYE_BEGIN_SCOPE()
+    //DYE_BEGIN_SCOPE()
     return (n == 1) ? 1 : n * factorial_recursive(n-1);
 }
 
 class A {
 public:
     void B(int) {
-        DYE_BEGIN_SCOPE();
+        //DYE_BEGIN_SCOPE();
     }
 
     void B(double) {
-        DYE_BEGIN_SCOPE();
+        //DYE_BEGIN_SCOPE();
     }
 
     void C() {

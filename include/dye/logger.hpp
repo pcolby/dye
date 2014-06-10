@@ -17,10 +17,8 @@ class log_decorator : public Base {
 
 public:
 
-    static log_decorator * get_instance()
-    {
-        return instance;
-    }
+    static log_decorator * get_instance() __attribute__((no_instrument_function));
+
 
     void begin(const std::string &file, const int line,
                const std::string &function,
@@ -85,6 +83,13 @@ private:
     static log_decorator * instance;
 
 };
+
+template<class Base>
+log_decorator<Base> * log_decorator<Base>::get_instance()
+{
+    return instance;
+}
+
 
 typedef log_decorator<basic_tracer> logger;
 

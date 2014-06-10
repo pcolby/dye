@@ -24,3 +24,11 @@ endif()
 if (HAVE_WEXTRA)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra")
 endif()
+
+# Enable compiler-assisted instrumentation.
+check_cxx_compiler_flag(-finstrument-functions HAVE_FINSTRUMENTFUNCTIONS)
+if (HAVE_FINSTRUMENTFUNCTIONS)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -finstrument-functions")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -finstrument-functions-exclude-file-list=/bits/,/include/dye/")
+    target_link_libraries(${PROJECT_NAME} -ldl)
+endif()

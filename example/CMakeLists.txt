@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 2.6)
 add_subdirectory(basic-logging)
 add_subdirectory(basic-profiling)
+add_subdirectory(compiler-assisted)
 add_subdirectory(trivial)

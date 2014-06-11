@@ -40,9 +40,6 @@ make
 
 * Implement dye::profile_decorator.
 * Add examples:
-  * basic-logging[-disabled]
-  * basic-profiling[-disabled]
-  * compiler-assisted[-disabled] -> with both logging and profiling.
   * custom-decorator
   * shared-libray
 * Add New Relic support.

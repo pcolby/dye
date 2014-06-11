@@ -9,7 +9,7 @@ and tracers that export to external services such as New Relic.
 ## Requirements
 
 The basic tracing framework requires little more than a decent C++ compiler.
-However, each extension may impose addition dependency if you choose to use
+However, each extension may impose addition dependencies if you choose to use
 them.
 
 Extension | Requirements
@@ -17,6 +17,10 @@ Extension | Requirements
 logger    | No additional requirements.
 new_relic | New Relic Agent SDK
 profiler  | Boost.Thread
+
+Also, the optional compiler-assisted instrumentation depends on compiler-
+specific extensions, such as gcc's `-finstrument-functions` option (also
+supported by clang).
 
 ## Installation
 

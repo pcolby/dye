@@ -5,6 +5,7 @@
 
 #ifndef __DYE_MACROS_HPP__
 #define __DYE_MACROS_HPP__
+#ifdef DYE_ENABLED
 
 #include "scope_guard.hpp"
 
@@ -45,4 +46,13 @@
 #define DYE_REGISTER_ATEXIT_FUNCTION(method) \
     atexit(dye_##method##_atexit_##DYE_MACRO_UUID)
 
+#else
+
+#define DYE_BEGIN_SCOPE(...)
+#define DYE_BEGIN_SECTION(...)
+#define DYE_END_SECTION()
+#define DYE_DECLARE_ATEXIT_FUNCTION(method, ...)
+#define DYE_REGISTER_ATEXIT_FUNCTION(method)
+
+#endif
 #endif

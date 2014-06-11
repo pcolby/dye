@@ -5,6 +5,7 @@
 
 #ifndef __DYE_SCOPE_GUARD_HPP__
 #define __DYE_SCOPE_GUARD_HPP__
+#ifdef DYE_ENABLED
 
 namespace dye {
 
@@ -62,4 +63,5 @@ typedef basic_scope_guard<int> scope_guard;
 
 }
 
+#endif
 #endif

@@ -3,6 +3,8 @@
 //       (See accompanying file LICENSE.md or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#define DYE_ENABLED
+
 #include <dye/logger.hpp>
 #include <dye/profiler.hpp>
 namespace dye { typedef profile_decorator<logger> dye_type; }

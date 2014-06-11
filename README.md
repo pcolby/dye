@@ -38,7 +38,6 @@ make
 
 ## To do
 
-* Consistent timestamping.
 * Implement dye::profile_decorator.
 * Add examples:
   * basic-logging[-disabled]

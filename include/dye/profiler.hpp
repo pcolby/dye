@@ -5,6 +5,7 @@
 
 #ifndef __DYE_PROFILER_HPP__
 #define __DYE_PROFILER_HPP__
+#ifdef DYE_ENABLED
 
 #include "basic_dye.hpp"
 
@@ -59,4 +60,5 @@ typedef profile_decorator<basic_tracer> profiler;
 
 }
 
+#endif
 #endif

@@ -5,6 +5,7 @@
 
 #ifndef __DYE_COMPILER_ASSIST_HPP__
 #define __DYE_COMPILER_ASSIST_HPP__
+#ifdef DYE_ENABLED
 
 #include "macros.hpp"
 
@@ -63,4 +64,5 @@ void __cyg_profile_func_exit(void *, void *)
 
 }
 
+#endif
 #endif

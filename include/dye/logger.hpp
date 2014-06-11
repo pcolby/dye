@@ -5,6 +5,7 @@
 
 #ifndef __DYE_LOGGER_HPP__
 #define __DYE_LOGGER_HPP__
+#ifdef DYE_ENABLED
 
 #include "basic_dye.hpp"
 
@@ -95,4 +96,5 @@ typedef log_decorator<basic_tracer> logger;
 
 }
 
+#endif
 #endif

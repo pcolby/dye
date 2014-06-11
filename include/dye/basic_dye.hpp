@@ -5,6 +5,7 @@
 
 #ifndef __DYE_BASIC_DYE_HPP__
 #define __DYE_BASIC_DYE_HPP__
+#ifdef DYE_ENABLED
 
 #include <string>
 
@@ -34,5 +35,7 @@ protected:
 };
 
 }
+
+#endif
 
 #endif

@@ -7,14 +7,14 @@
 
 #include <dye/logger.hpp>
 #include <dye/profiler.hpp>
-namespace dye { typedef profile_decorator<logger> dye_type; }
-#include <dye/compiler_assist.hpp>
 #include <dye/macros.hpp>
+DYE_DECLARE_TYPE(dye::profile_decorator<dye::logger>);
+#include <dye/compiler_assist.hpp>
+
+DYE_DECLARE_INSTANCE();
+DYE_DECLARE_ATEXIT_FUNCTION(print_flat_profile);
 
 #include <stdlib.h>
-
-template<> dye::dye_type * dye::dye_type::instance(new dye::dye_type);
-DYE_DECLARE_ATEXIT_FUNCTION(print_flat_profile);
 
 template<typename Type>
 Type factorial_iterative(const Type n)

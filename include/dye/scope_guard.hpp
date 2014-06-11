@@ -9,18 +9,20 @@
 
 namespace dye {
 
-template <typename Type>
-class basic_scope_guard {
+/// @todo  Extend this to not need to know in advance the instance type.
+
+template <class DyeType, typename CountType>
+class scope_guard {
 
 public:
 
-    basic_scope_guard(const Type start_count = 0) : count(start_count)
+    scope_guard(const CountType start_count = 0) : count(start_count)
     {
     }
 
-    ~basic_scope_guard()
+    ~scope_guard()
     {
-        dye_type * const instance = dye_type::get_instance();
+        DyeType * const instance = DyeType::get_instance();
         for (;count > 0; --count) {
             instance->end();
         }
@@ -31,35 +33,45 @@ public:
      *
      * @return the new count.
      */
-    Type operator++()     { return ++count; }
+    CountType operator++()
+    {
+        return ++count;
+    }
 
     /**
      * @brief Post-increment the counter.
      *
      * @return the new count.
      */
-    Type operator++(Type) { return count++; }
+    CountType operator++(CountType)
+    {
+        return count++;
+    }
 
     /**
      * @brief Pre-decrement the counter.
      *
      * @return the new count.
      */
-    Type operator--()     { return --count; }
+    CountType operator--()
+    {
+        return --count;
+    }
 
     /**
      * @brief Post-decrement the counter.
      *
      * @return the new count.
      */
-    Type operator--(Type) { return count--; }
+    CountType operator--(CountType)
+    {
+        return count--;
+    }
 
 private:
-    Type count;
+    CountType count;
 
 };
-
-typedef basic_scope_guard<int> scope_guard;
 
 }
 

@@ -3,15 +3,6 @@
 //       (See accompanying file LICENSE.md or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-
 #include <dye/logger.hpp>
-
-/// @todo  Wrap this in a macro?
-#ifdef DYE_ENABLED
-namespace dye {
-    typedef logger dye_type;
-}
-#endif
-
 #include <dye/macros.hpp>
-
+DYE_DECLARE_TYPE(dye::logger);

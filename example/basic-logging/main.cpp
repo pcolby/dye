@@ -7,10 +7,7 @@
 #include "bar.h"
 #include "dye.h"
 
-/// @todo  Wrap this in a macro?
-#ifdef DYE_ENABLED
-template<> dye::dye_type * dye::dye_type::instance(new dye::dye_type);
-#endif
+DYE_DECLARE_INSTANCE();
 
 int main(int, char **)
 {

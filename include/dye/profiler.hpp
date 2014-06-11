@@ -9,6 +9,8 @@
 
 #include "basic_dye.hpp"
 
+#include <iostream>
+
 namespace dye {
 
 template<class Base>

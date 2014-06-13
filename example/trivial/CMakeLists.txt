@@ -6,9 +6,8 @@ include_directories ("${PROJECT_SOURCE_DIR}/../../include")
 
 add_executable(${PROJECT_NAME} "${PROJECT_NAME}.cpp")
 
-#find_package(Boost COMPONENTS program_options REQUIRED)
-
-#target_link_libraries(${PROJECT_NAME} ${Boost_PROGRAM_OPTIONS_LIBRARY})
+find_package(Boost COMPONENTS system thread REQUIRED)
+target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES})
 
 # Enable (and stop on) compiler warnings.
 include(CheckCXXCompilerFlag)
@@ -29,6 +28,10 @@ endif()
 check_cxx_compiler_flag(-finstrument-functions HAVE_FINSTRUMENTFUNCTIONS)
 if (HAVE_FINSTRUMENTFUNCTIONS)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -finstrument-functions")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -finstrument-functions-exclude-file-list=/bits/,/include/dye/")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -finstrument-functions-exclude-file-list")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}=/bits/")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS},/include/boost/")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS},/include/c++/")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS},/include/dye/")
     target_link_libraries(${PROJECT_NAME} -ldl)
 endif()

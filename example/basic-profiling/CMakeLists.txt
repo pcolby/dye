@@ -12,6 +12,9 @@ set_property(
    PROPERTY COMPILE_DEFINITIONS DYE_ENABLED
 )
 
+find_package(Boost COMPONENTS system thread REQUIRED)
+target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES})
+
 # Enable (and stop on) compiler warnings.
 include(CheckCXXCompilerFlag)
 check_cxx_compiler_flag(-Wall   HAVE_WALL)

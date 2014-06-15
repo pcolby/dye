@@ -92,7 +92,7 @@ log_decorator<Base> * log_decorator<Base>::get_instance()
 }
 
 
-typedef log_decorator<basic_tracer> logger;
+typedef log_decorator<basic_dye> logger;
 
 }
 

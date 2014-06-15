@@ -15,8 +15,6 @@
 #include <map>
 #include <stack>
 
-#include <iostream> ///< @todo Remove this?
-
 namespace dye {
 
 template<class Base>
@@ -212,7 +210,7 @@ private:
 };
 
 
-typedef profile_decorator<basic_tracer> profiler;
+typedef profile_decorator<basic_dye> profiler;
 
 }
 

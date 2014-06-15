@@ -19,7 +19,7 @@ enum operation_type {
     datastore_delete, ///< eg DELETE, Acknowledge / delete
 };
 
-class basic_tracer {
+class basic_dye {
 
 public:
     void begin(const std::string &, const int, const std::string &,
@@ -30,7 +30,7 @@ public:
     void reset() const throw() {}
 
 protected:
-    basic_tracer() throw() {}
+    basic_dye() throw() {}
 
 };
 

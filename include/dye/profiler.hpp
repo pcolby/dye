@@ -71,7 +71,7 @@ public:
             call_info new_call_info;
             new_call_info.call_count = 0;
             /// @todo Move this to a call_info constructor?
-            new_call_info.minimum_self_duration = new_call_info.minimum_child_duration = boost::posix_time::pos_infin;
+            new_call_info.duration.self.minimum = new_call_info.duration.child.minimum = boost::posix_time::pos_infin;
             /// @todo make_pair?
             this_call_info = calls.insert(std::pair<std::string, call_info>(section_id, new_call_info)).first;
         }
@@ -79,18 +79,18 @@ public:
 
         // Update the self call timers.
         this_call_info->second.call_count++;
-        if (call_stack->top().self_duration < this_call_info->second.minimum_self_duration)
-            this_call_info->second.minimum_self_duration = call_stack->top().self_duration;
-        if (call_stack->top().self_duration > this_call_info->second.maximum_self_duration)
-            this_call_info->second.maximum_self_duration = call_stack->top().self_duration;
-        this_call_info->second.total_self_duration += call_stack->top().self_duration;
+        if (call_stack->top().self_duration < this_call_info->second.duration.self.minimum)
+            this_call_info->second.duration.self.minimum = call_stack->top().self_duration;
+        if (call_stack->top().self_duration > this_call_info->second.duration.self.maximum)
+            this_call_info->second.duration.self.maximum = call_stack->top().self_duration;
+        this_call_info->second.duration.self.total += call_stack->top().self_duration;
 
         // Update the accumulated children call timers.
-        if (call_stack->top().child_duration < this_call_info->second.minimum_child_duration)
-            this_call_info->second.minimum_child_duration = call_stack->top().child_duration;
-        if (call_stack->top().child_duration > this_call_info->second.maximum_child_duration)
-            this_call_info->second.maximum_child_duration = this_call_info->second.minimum_child_duration;
-        this_call_info->second.total_child_duration += call_stack->top().child_duration;
+        if (call_stack->top().child_duration < this_call_info->second.duration.child.minimum)
+            this_call_info->second.duration.child.minimum = call_stack->top().child_duration;
+        if (call_stack->top().child_duration > this_call_info->second.duration.child.maximum)
+            this_call_info->second.duration.child.maximum = this_call_info->second.duration.child.minimum;
+        this_call_info->second.duration.child.total += call_stack->top().child_duration;
 
         // Remove this call from the stack, and add its total (self + children) time to the parent's children time.
         const boost::posix_time::time_duration total_duration = call_stack->top().self_duration + call_stack->top().child_duration;
@@ -155,14 +155,17 @@ public:
     }
 
 protected:
+    template <typename Type>
+    struct min_max_total {
+        Type minimum, maximum, total;
+    };
+
     typedef struct {
         uint_fast32_t call_count;
-        boost::posix_time::time_duration minimum_self_duration;
-        boost::posix_time::time_duration maximum_self_duration;
-        boost::posix_time::time_duration total_self_duration;
-        boost::posix_time::time_duration minimum_child_duration;
-        boost::posix_time::time_duration maximum_child_duration;
-        boost::posix_time::time_duration total_child_duration;
+        struct {
+            min_max_total<boost::posix_time::time_duration> self;
+            min_max_total<boost::posix_time::time_duration> child;
+        } duration;
     } call_info;
 
     /// @brief  A call name, with its associated call information.
@@ -186,21 +189,21 @@ protected:
     static bool compare_total_self_duration(const std::pair<std::string, call_info> &first,
                                             const std::pair<std::string, call_info> &second)
     {
-        return (first.second.total_self_duration < second.second.total_self_duration);
+        return (first.second.duration.self.total < second.second.duration.self.total);
     }
 
     static std::string to_string(const std::pair<std::string, call_info> &pair)
     {
         std::ostringstream result;
         result << std::setw(6) << pair.second.call_count      << ' '
-               << std::setw(9) << pair.second.minimum_self_duration.total_microseconds()    << ' '
-               << std::setw(9) << (pair.second.total_self_duration.total_microseconds() / pair.second.call_count ) << ' '
-               << std::setw(9) << pair.second.maximum_self_duration.total_microseconds()    << ' '
-               << std::setw(9) << pair.second.total_self_duration.total_microseconds()  << ' '
-               << std::setw(9) << pair.second.minimum_child_duration.total_microseconds()   << ' '
-               << std::setw(9) << (pair.second.total_child_duration.total_microseconds() / pair.second.call_count ) << ' '
-               << std::setw(9) << pair.second.maximum_child_duration.total_microseconds()   << ' '
-               << std::setw(9) << pair.second.total_child_duration.total_microseconds() << ' '
+               << std::setw(9) << pair.second.duration.self.minimum.total_microseconds()    << ' '
+               << std::setw(9) << (pair.second.duration.self.total.total_microseconds() / pair.second.call_count ) << ' '
+               << std::setw(9) << pair.second.duration.self.maximum.total_microseconds()    << ' '
+               << std::setw(9) << pair.second.duration.self.total.total_microseconds()  << ' '
+               << std::setw(9) << pair.second.duration.child.minimum.total_microseconds()   << ' '
+               << std::setw(9) << (pair.second.duration.child.total.total_microseconds() / pair.second.call_count ) << ' '
+               << std::setw(9) << pair.second.duration.child.maximum.total_microseconds()   << ' '
+               << std::setw(9) << pair.second.duration.child.total.total_microseconds() << ' '
                << pair.first;
         return result.str();
     }

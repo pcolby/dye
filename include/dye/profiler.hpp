@@ -72,8 +72,7 @@ public:
             new_call_info.call_count = 0;
             /// @todo Move this to a call_info constructor?
             new_call_info.duration.self.minimum = new_call_info.duration.child.minimum = boost::posix_time::pos_infin;
-            /// @todo make_pair?
-            this_call_info = calls.insert(std::pair<std::string, call_info>(section_id, new_call_info)).first;
+            this_call_info = calls.insert(std::make_pair(section_id, new_call_info)).first;
         }
         calls_lock.unlock();
 
@@ -121,14 +120,14 @@ public:
         // If not sorting, then simply convert all map items to string.
         boost::unique_lock<boost::mutex> calls_lock(calls_mutex);
         if (!sort) {
-            for (typename std::map<std::string, call_info>::const_iterator iter = calls.begin(); iter != calls.end(); iter++)
+            for (typename call_info_map::const_iterator iter = calls.begin(); iter != calls.end(); ++iter)
                 result << to_string(*iter) << std::endl;
             return result.str();
         }
 
         // Convert the map to a list.
-        std::list<std::pair<std::string, call_info> > list;
-        for (typename std::map<std::string, call_info>::const_iterator iter = calls.begin(); iter != calls.end(); iter++) {
+        std::list<typename call_info_map::value_type> list;
+        for (typename call_info_map::const_iterator iter = calls.begin(); iter != calls.end(); ++iter) {
             list.push_back(*iter);
         }
         calls_lock.unlock();
@@ -138,7 +137,7 @@ public:
         list.reverse();
 
         // Print the results.
-        for (typename std::list<std::pair<std::string, call_info> >::const_iterator iter = list.begin(); iter != list.end(); iter++)
+        for (typename std::list<typename call_info_map::value_type>::const_iterator iter = list.begin(); iter != list.end(); ++iter)
             result << to_string(*iter) << std::endl;
         return result.str();
     }
@@ -168,8 +167,9 @@ protected:
         } duration;
     } call_info;
 
+    typedef std::map<std::string, call_info> call_info_map;
     /// @brief  A call name, with its associated call information.
-    std::map<std::string, call_info> calls;
+    call_info_map calls;
     boost::mutex calls_mutex;
 
     typedef struct {
@@ -186,13 +186,13 @@ protected:
 
     }
 
-    static bool compare_total_self_duration(const std::pair<std::string, call_info> &first,
-                                            const std::pair<std::string, call_info> &second)
+    static bool compare_total_self_duration(const typename call_info_map::value_type &first,
+                                            const typename call_info_map::value_type &second)
     {
         return (first.second.duration.self.total < second.second.duration.self.total);
     }
 
-    static std::string to_string(const std::pair<std::string, call_info> &pair)
+    static std::string to_string(const typename call_info_map::value_type &pair)
     {
         return to_string(pair.first, pair.second);
     }
@@ -215,8 +215,8 @@ protected:
 
 private:
     static profile_decorator * instance;
-};
 
+};
 
 typedef profile_decorator<basic_dye> profiler;
 

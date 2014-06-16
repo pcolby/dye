@@ -194,17 +194,22 @@ protected:
 
     static std::string to_string(const std::pair<std::string, call_info> &pair)
     {
+        return to_string(pair.first, pair.second);
+    }
+
+    static std::string to_string(const std::string &call_id, const call_info &call_info)
+    {
         std::ostringstream result;
-        result << std::setw(6) << pair.second.call_count      << ' '
-               << std::setw(9) << pair.second.duration.self.minimum.total_microseconds()    << ' '
-               << std::setw(9) << (pair.second.duration.self.total.total_microseconds() / pair.second.call_count ) << ' '
-               << std::setw(9) << pair.second.duration.self.maximum.total_microseconds()    << ' '
-               << std::setw(9) << pair.second.duration.self.total.total_microseconds()  << ' '
-               << std::setw(9) << pair.second.duration.child.minimum.total_microseconds()   << ' '
-               << std::setw(9) << (pair.second.duration.child.total.total_microseconds() / pair.second.call_count ) << ' '
-               << std::setw(9) << pair.second.duration.child.maximum.total_microseconds()   << ' '
-               << std::setw(9) << pair.second.duration.child.total.total_microseconds() << ' '
-               << pair.first;
+        result << std::setw(6) << call_info.call_count      << ' '
+               << std::setw(9) << call_info.duration.self.minimum.total_microseconds()    << ' '
+               << std::setw(9) << (call_info.duration.self.total.total_microseconds() / call_info.call_count ) << ' '
+               << std::setw(9) << call_info.duration.self.maximum.total_microseconds()    << ' '
+               << std::setw(9) << call_info.duration.self.total.total_microseconds()  << ' '
+               << std::setw(9) << call_info.duration.child.minimum.total_microseconds()   << ' '
+               << std::setw(9) << (call_info.duration.child.total.total_microseconds() / call_info.call_count ) << ' '
+               << std::setw(9) << call_info.duration.child.maximum.total_microseconds()   << ' '
+               << std::setw(9) << call_info.duration.child.total.total_microseconds() << ' '
+               << call_id;
         return result.str();
     }
 

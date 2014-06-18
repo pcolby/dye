@@ -12,7 +12,9 @@
 #include <boost/date_time/posix_time/posix_time_types.hpp>
 #include <boost/thread.hpp>
 
+#include <algorithm>
 #include <map>
+#include <numeric>
 #include <stack>
 
 namespace dye {
@@ -114,32 +116,21 @@ public:
 
     std::string get_flat_profile(const bool sort = true)
     {
-        std::ostringstream result;
-        result << " calls   minSelf   avgSelf   maxSelf   ttlSelf  minChild  avgChild  maxChild  ttlChild" << std::endl;
+        if (sort) {
+            // Convert the map to a list.
+            std::list<typename call_info_map::value_type> list;
+            boost::unique_lock<boost::mutex> calls_lock(calls_mutex);
+            std::copy(calls.begin(), calls.end(), std::back_inserter(list));
+            calls_lock.unlock();
 
-        // If not sorting, then simply convert all map items to string.
-        boost::unique_lock<boost::mutex> calls_lock(calls_mutex);
-        if (!sort) {
-            for (typename call_info_map::const_iterator iter = calls.begin(); iter != calls.end(); ++iter)
-                result << to_string(*iter) << std::endl;
-            return result.str();
+            // Sort the list.
+            list.sort(compare_total_self_duration);
+            list.reverse();
+            return to_string(list);
+        } else {
+            boost::unique_lock<boost::mutex> calls_lock(calls_mutex);
+            return to_string(calls);
         }
-
-        // Convert the map to a list.
-        std::list<typename call_info_map::value_type> list;
-        for (typename call_info_map::const_iterator iter = calls.begin(); iter != calls.end(); ++iter) {
-            list.push_back(*iter);
-        }
-        calls_lock.unlock();
-
-        // Sort the list.
-        list.sort(compare_total_self_duration);
-        list.reverse();
-
-        // Print the results.
-        for (typename std::list<typename call_info_map::value_type>::const_iterator iter = list.begin(); iter != list.end(); ++iter)
-            result << to_string(*iter) << std::endl;
-        return result.str();
     }
 
     void print_call_graph(std::ostream &output_stream = std::clog)
@@ -190,6 +181,19 @@ protected:
                                             const typename call_info_map::value_type &second)
     {
         return (first.second.duration.self.total < second.second.duration.self.total);
+    }
+
+    static std::string accumulate(const std::string &a, const typename call_info_map::value_type &b)
+    {
+        return a + to_string(b) + '\n';
+    }
+
+    template<class CollectionType>
+    static std::string to_string(const CollectionType &collection)
+    {
+        return
+            " calls   minSelf   avgSelf   maxSelf   ttlSelf  minChild  avgChild  maxChild  ttlChild\n" +
+            std::accumulate(collection.begin(), collection.end(), std::string(), profile_decorator<Base>::accumulate);
     }
 
     static std::string to_string(const typename call_info_map::value_type &pair)

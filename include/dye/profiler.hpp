@@ -183,9 +183,10 @@ protected:
         return (first.second.duration.self.total < second.second.duration.self.total);
     }
 
-    static std::string accumulate(const std::string &a, const typename call_info_map::value_type &b)
+    static std::string accumulate(const std::string &prefix,
+                                  const typename call_info_map::value_type &pair)
     {
-        return a + to_string(b) + '\n';
+        return prefix + to_string(pair) + '\n';
     }
 
     template<class CollectionType>

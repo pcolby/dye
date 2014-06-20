@@ -30,10 +30,13 @@ public:
                const std::string &section_name = std::string(),
                const operation_type operation = generic_operation)
     {
-        // Pause the current stack item (if there is one).
+        // Do we have a call stack for this thread yet?
         if (call_stack.get() == NULL) {
+            // Create the call stack (a thread_specific_ptr).
             call_stack.reset(new std::stack<call_frame>);
         } else if (!call_stack->empty()) {
+            // Accumulate the top item's duration so far. Subsequent time will
+            // be recorded against the new section (created below) instead.
             call_stack->top().self_duration +=
                 boost::posix_time::microsec_clock::universal_time() - call_stack->top().start_time;
         }
@@ -41,10 +44,12 @@ public:
         // Push this new call / code section onto the stack.
         call_stack->push(call_frame(section_id(file, line, function, section_name)));
 
+        // Let the base implementation do its work too.
         Base::begin(file, line, function, section_name, operation);
     }
 
     void end()   {
+        // Let the base implementation do its work.
         Base::end();
 
         // Make sure our stack is not empty (ie begin was called before end).

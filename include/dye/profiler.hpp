@@ -39,12 +39,7 @@ public:
         }
 
         // Push this new call / code section onto the stack.
-        std::ostringstream section_id;
-        section_id << file << ':' << line << ':' << function;
-        if (!section_name.empty()) {
-            section_id << ':' << section_name;
-        }
-        call_stack->push(call_frame(section_id.str()));
+        call_stack->push(call_frame(section_id(file, line, function, section_name)));
 
         Base::begin(file, line, function, section_name, operation);
     }
@@ -221,6 +216,18 @@ protected:
                << std::setw(9) << call_info.duration.child.total.total_microseconds() << ' '
                << call_id;
         return result.str();
+    }
+
+    static std::string section_id(const std::string &file, const int line,
+                                  const std::string &function,
+                                  const std::string &section_name)
+    {
+        std::ostringstream section_id;
+        section_id << file << ':' << line << ':' << function;
+        if (!section_name.empty()) {
+            section_id << ':' << section_name;
+        }
+        return section_id.str();
     }
 
 private:

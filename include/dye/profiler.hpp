@@ -37,8 +37,7 @@ public:
         } else if (!call_stack->empty()) {
             // Accumulate the top item's duration so far. Subsequent time will
             // be recorded against the new section (created below) instead.
-            call_stack->top().self_duration +=
-                boost::posix_time::microsec_clock::universal_time() - call_stack->top().start_time;
+            call_stack->top().self_duration += now() - call_stack->top().start_time;
         }
 
         // Push this new call / code section onto the stack.
@@ -59,7 +58,7 @@ public:
         }
 
         // Get the finalised self-time for this call.
-        call_stack->top().self_duration += boost::posix_time::microsec_clock::universal_time() - call_stack->top().start_time;
+        call_stack->top().self_duration += now() - call_stack->top().start_time;
 
 
         // Find / create a call-info entry for this function.
@@ -95,7 +94,7 @@ public:
         call_stack->pop();
         if (!call_stack->empty()) {
             call_stack->top().child_duration += total_duration;
-            call_stack->top().start_time = boost::posix_time::microsec_clock::universal_time();
+            call_stack->top().start_time = now();
         }
     }
 
@@ -167,7 +166,7 @@ protected:
         boost::posix_time::time_duration child_duration;
 
         call_frame_struct(const std::string &section_id,
-                          const boost::posix_time::ptime &start_time = boost::posix_time::microsec_clock::universal_time())
+                          const boost::posix_time::ptime &start_time = now())
             : section_id(section_id), start_time(start_time)
         {
 
@@ -192,6 +191,11 @@ protected:
                                   const typename call_info_map::value_type &pair)
     {
         return prefix + to_string(pair) + '\n';
+    }
+
+    static boost::posix_time::ptime now()
+    {
+        return boost::posix_time::microsec_clock::universal_time();
     }
 
     template<class CollectionType>

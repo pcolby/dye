@@ -44,10 +44,7 @@ public:
         if (!section_name.empty()) {
             section_id << ':' << section_name;
         }
-        call_frame frame;
-        frame.section_id.assign(section_id.str());
-        frame.start_time = boost::posix_time::microsec_clock::universal_time();
-        call_stack->push(frame);
+        call_stack->push(call_frame(section_id.str()));
 
         Base::begin(file, line, function, section_name, operation);
     }
@@ -163,11 +160,19 @@ protected:
     call_info_map calls;
     boost::mutex calls_mutex;
 
-    typedef struct {
+    typedef struct call_frame_struct {
         std::string section_id;
         boost::posix_time::ptime start_time;
         boost::posix_time::time_duration self_duration;
         boost::posix_time::time_duration child_duration;
+
+        call_frame_struct(const std::string &section_id,
+                          const boost::posix_time::ptime &start_time = boost::posix_time::microsec_clock::universal_time())
+            : section_id(section_id), start_time(start_time)
+        {
+
+        }
+
     } call_frame;
 
     boost::thread_specific_ptr<std::stack<call_frame> > call_stack;

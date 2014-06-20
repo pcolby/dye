@@ -43,10 +43,9 @@ make
 
 ## To do
 
-* Implement dye::profile_decorator.
-* Add examples:
-  * custom-decorator
-  * shared-libray
+* Minor dye::profile_decorator refactoring.
+* Additional examples:
+** custom-decorator
+** shared-libray
 * Add New Relic support.
-* Of course, lots of documentation.
-* Rename to Vermeer?
+* Lots of documentation.

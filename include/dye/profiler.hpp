@@ -36,7 +36,7 @@ public:
             call_stack.reset(new std::stack<call_frame>);
         } else if (!call_stack->empty()) {
             // Accumulate the top item's duration so far. Subsequent time will
-            // be recorded against the new section (created below) instead.
+            // be recorded against the new section, until it ends.
             call_stack->top().self_duration += now() - call_stack->top().start_time;
         }
 
@@ -53,13 +53,13 @@ public:
 
         // Make sure our stack is not empty (ie begin was called before end).
         if (call_stack->empty()) {
-            //syslog(LOG_ERR, "end called with empty stack");
+            std::cerr << section_id(__FILE__, __LINE__, __PRETTY_FUNCTION__,
+                                    "end called with empty stack") << std::endl;
             return;
         }
 
         // Get the finalised self-time for this call.
         call_stack->top().self_duration += now() - call_stack->top().start_time;
-
 
         // Find / create a call-info entry for this function.
         const std::string &section_id = call_stack->top().section_id;
@@ -67,9 +67,6 @@ public:
         typename std::map<std::string, call_info>::iterator this_call_info = calls.find(section_id);
         if (this_call_info == calls.end()) {
             call_info new_call_info;
-            new_call_info.call_count = 0;
-            /// @todo Move this to a call_info constructor?
-            new_call_info.duration.self.minimum = new_call_info.duration.child.minimum = boost::posix_time::pos_infin;
             this_call_info = calls.insert(std::make_pair(section_id, new_call_info)).first;
         }
         calls_lock.unlock();
@@ -146,12 +143,21 @@ protected:
         Type minimum, maximum, total;
     };
 
-    typedef struct {
+    typedef struct call_info_struct {
         uint_fast32_t call_count;
         struct {
             min_max_total<boost::posix_time::time_duration> self;
             min_max_total<boost::posix_time::time_duration> child;
         } duration;
+
+        call_info_struct() : call_count(0)
+        {
+            duration.self.minimum = boost::posix_time::pos_infin;
+            duration.self.maximum = boost::posix_time::neg_infin;
+            duration.child.minimum = boost::posix_time::pos_infin;
+            duration.child.maximum = boost::posix_time::neg_infin;
+        }
+
     } call_info;
 
     typedef std::map<std::string, call_info> call_info_map;

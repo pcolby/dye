@@ -70,20 +70,8 @@ public:
         }
         calls_lock.unlock();
 
-        // Update the self call timers.
-        this_call_info->second.call_count++;
-        if (call_stack->top().self_duration < this_call_info->second.duration.self.minimum)
-            this_call_info->second.duration.self.minimum = call_stack->top().self_duration;
-        if (call_stack->top().self_duration > this_call_info->second.duration.self.maximum)
-            this_call_info->second.duration.self.maximum = call_stack->top().self_duration;
-        this_call_info->second.duration.self.total += call_stack->top().self_duration;
-
-        // Update the accumulated children call timers.
-        if (call_stack->top().child_duration < this_call_info->second.duration.child.minimum)
-            this_call_info->second.duration.child.minimum = call_stack->top().child_duration;
-        if (call_stack->top().child_duration > this_call_info->second.duration.child.maximum)
-            this_call_info->second.duration.child.maximum = this_call_info->second.duration.child.minimum;
-        this_call_info->second.duration.child.total += call_stack->top().child_duration;
+        // Update the call count and timers, including min and max durations.
+        this_call_info->second += call_stack->top();
 
         // Remove this call from the stack, and add its total (self + children) time to the parent's children time.
         const boost::posix_time::time_duration total_duration = call_stack->top().self_duration + call_stack->top().child_duration;
@@ -140,7 +128,17 @@ protected:
     template <typename Type>
     struct min_max_total {
         Type minimum, maximum, total;
+
+        min_max_total& operator+=(const Type &value)
+        {
+            if (value < minimum) minimum = value;
+            if (value > maximum) maximum = value;
+            total += value;
+            return *this;
+        }
     };
+
+    struct call_frame_struct;
 
     typedef struct call_info_struct {
         uint_fast32_t call_count;
@@ -155,6 +153,14 @@ protected:
             duration.self.maximum = boost::posix_time::neg_infin;
             duration.child.minimum = boost::posix_time::pos_infin;
             duration.child.maximum = boost::posix_time::neg_infin;
+        }
+
+        call_info_struct& operator+=(const call_frame_struct &frame)
+        {
+            call_count++;
+            duration.self += frame.self_duration;   ///< Applies min/max too.
+            duration.child += frame.child_duration; ///< Applies min/max too.
+            return *this;
         }
 
     } call_info;

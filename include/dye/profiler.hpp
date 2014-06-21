@@ -74,7 +74,7 @@ public:
         this_call_info->second += call_stack->top();
 
         // Remove this call from the stack, and add its total (self + children) time to the parent's children time.
-        const boost::posix_time::time_duration total_duration = call_stack->top().self_duration + call_stack->top().child_duration;
+        const boost::posix_time::time_duration total_duration = call_stack->top().total_duration();
         call_stack->pop();
         if (!call_stack->empty()) {
             call_stack->top().child_duration += total_duration;
@@ -181,6 +181,11 @@ protected:
             : section_id(section_id), start_time(start_time)
         {
 
+        }
+
+        boost::posix_time::time_duration total_duration() const
+        {
+            return self_duration + child_duration;
         }
 
     } call_frame;

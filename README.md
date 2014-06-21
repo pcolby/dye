@@ -43,7 +43,6 @@ make
 
 ## To do
 
-* Minor dye::profile_decorator refactoring.
 * Additional examples:
 ** custom-decorator
 ** shared-libray

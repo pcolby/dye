@@ -64,7 +64,7 @@ public:
         // Find / create a call-info entry for this function.
         const std::string &section_id = call_stack->top().section_id;
         boost::unique_lock<boost::mutex> calls_lock(calls_mutex);
-        typename std::map<std::string, call_info>::iterator this_call_info = calls.find(section_id);
+        typename call_info_map::iterator this_call_info = calls.find(section_id);
         if (this_call_info == calls.end()) {
             call_info new_call_info;
             this_call_info = calls.insert(std::make_pair(section_id, new_call_info)).first;

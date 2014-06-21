@@ -166,7 +166,6 @@ protected:
     } call_info;
 
     typedef std::map<std::string, call_info> call_info_map;
-    /// @brief  A call name, with its associated call information.
     call_info_map calls;
     boost::mutex calls_mutex;
 

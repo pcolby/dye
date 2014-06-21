@@ -66,8 +66,7 @@ public:
         boost::unique_lock<boost::mutex> calls_lock(calls_mutex);
         typename call_info_map::iterator this_call_info = calls.find(section_id);
         if (this_call_info == calls.end()) {
-            call_info new_call_info;
-            this_call_info = calls.insert(std::make_pair(section_id, new_call_info)).first;
+            this_call_info = calls.insert(std::make_pair(section_id, call_info())).first;
         }
         calls_lock.unlock();
 

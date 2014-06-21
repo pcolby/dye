@@ -45,7 +45,7 @@ make
 ## To do
 
 * Additional examples:
-** custom-decorator
-** shared-libray
+  * custom-decorator
+  * shared-libray
 * Add New Relic support.
 * Lots of documentation.

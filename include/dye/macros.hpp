@@ -42,7 +42,7 @@
     namespace dye { typedef type dye_type; }
 
 #define DYE_DECLARE_INSTANCE() \
-    template<> dye::dye_type * dye::dye_type::instance(new dye::dye_type);
+    namespace dye { template<> dye_type * dye_type::instance(new dye::dye_type); }
 
 #define DYE_DECLARE_ATEXIT_FUNCTION(method, ...) \
     void dye_##method##_atexit_##DYE_MACRO_UUID() { \

@@ -43,7 +43,7 @@ public:
      *
      * @return the new count.
      */
-    CountType operator++(CountType)
+    CountType operator++(int)
     {
         return count++;
     }
@@ -63,7 +63,7 @@ public:
      *
      * @return the new count.
      */
-    CountType operator--(CountType)
+    CountType operator--(int)
     {
         return count--;
     }

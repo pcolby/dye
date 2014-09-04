@@ -28,15 +28,15 @@
 #define DYE_BEGIN_SCOPE(...) \
     dye::scope_guard<dye::dye_type,int> dye_scope_guard_##DYE_MACRO_UUID=0; \
     dye::dye_type::get_instance()->begin(__FILE__, __LINE__, __PRETTY_FUNCTION__, ##__VA_ARGS__); \
-    dye_scope_guard_##DYE_MACRO_UUID++;
+    ++dye_scope_guard_##DYE_MACRO_UUID;
 
 #define DYE_BEGIN_SECTION(...) \
     dye::dye_type::get_instance()->begin(__FILE__, __LINE__, __PRETTY_FUNCTION__, ##__VA_ARGS__); \
-    dye_scope_guard_##DYE_MACRO_UUID++;
+    ++dye_scope_guard_##DYE_MACRO_UUID;
 
 #define DYE_END_SECTION() \
     dye::dye_type::get_instance()->end(); \
-    dye_scope_guard_##DYE_MACRO_UUID--;
+    --dye_scope_guard_##DYE_MACRO_UUID;
 
 #define DYE_DECLARE_TYPE(type) \
     namespace dye { typedef type dye_type; }

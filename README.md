@@ -46,5 +46,5 @@ make
 * Additional examples:
   * custom-decorator
   * shared-libray
-* Add New Relic support.
+* Add New Relic support (via the [Agent SDK](https://docs.newrelic.com/docs/agent-sdk/agent-sdk))
 * Lots of documentation.

@@ -27,6 +27,9 @@ static size_t cyg_profile_count = 0;
 extern "C" {
 
 void __cyg_profile_func_enter(void *this_fn, void *)
+    __attribute__((no_instrument_function));
+
+void __cyg_profile_func_enter(void *this_fn, void *)
 {
     dye::dye_type * const dye_instance = dye::dye_type::get_instance();
     if (dye_instance == NULL) {
@@ -38,6 +41,7 @@ void __cyg_profile_func_enter(void *this_fn, void *)
     if ((!dladdr(this_fn, &symbol_info)) || (symbol_info.dli_sname == NULL)) {
         std::ostringstream stream;
         stream << std::hex << this_fn;
+        std::cout << "no stirng" << std::endl;
         dye_instance->begin(std::string(), 0, stream.str());
         return;
     }
@@ -46,13 +50,20 @@ void __cyg_profile_func_enter(void *this_fn, void *)
     char * const demangled_name =
         abi::__cxa_demangle(symbol_info.dli_sname, NULL, 0, &demangle_status);
     if (demangle_status == 0) {
+        std::cout << "a: " << symbol_info.dli_fname << std::endl;
         dye_instance->begin(symbol_info.dli_fname, 0, demangled_name);
+        std::cout << "b: " << symbol_info.dli_fname << std::endl;
         free(demangled_name);
+        std::cout << "c: " << symbol_info.dli_fname << std::endl;
         return;
     }
 
+    std::cout << "d: " << symbol_info.dli_fname << std::endl;
     dye_instance->begin(symbol_info.dli_fname, 0, symbol_info.dli_sname);
 }
+
+void __cyg_profile_func_exit(void *, void *)
+    __attribute__((no_instrument_function));
 
 void __cyg_profile_func_exit(void *, void *)
 {

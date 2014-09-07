@@ -23,13 +23,15 @@ template<class Base>
 class profile_decorator : public Base {
 
 public:
-    static profile_decorator * get_instance() { return instance; }
+    static profile_decorator * get_instance() __attribute__((no_instrument_function)) { return instance; }
 
     void begin(const std::string &file, const int line,
                const std::string &function,
                const std::string &section_name = std::string(),
                const operation_type operation = generic_operation)
+        __attribute__((no_instrument_function))
     {
+        std::cout << "pb1: " << std::endl;
         // Do we have a call stack for this thread yet?
         if (call_stack.get() == NULL) {
             // Create the call stack (a thread_specific_ptr).
@@ -39,15 +41,18 @@ public:
             // be recorded against the new section, until it ends.
             call_stack->top().self_duration += now() - call_stack->top().start_time;
         }
+        std::cout << "pb2: " << std::endl;
 
         // Push this new call / code section onto the stack.
         call_stack->push(call_frame(section_id(file, line, function, section_name)));
 
+        std::cout << "pb3: " << std::endl;
         // Let the base implementation do its work too.
         Base::begin(file, line, function, section_name, operation);
+        std::cout << "pb: " << std::endl;
     }
 
-    void end()   {
+    void end() __attribute__((no_instrument_function)) {
         // Let the base implementation do its work.
         Base::end();
 
@@ -82,19 +87,20 @@ public:
         }
     }
 
-    void reset()
+    void reset() __attribute__((no_instrument_function))
     {
         Base::reset();
         boost::lock_guard<boost::mutex> calls_lock(calls_mutex);
         calls.clear();
     }
 
-    std::string get_call_graph()
+    std::string get_call_graph() __attribute__((no_instrument_function))
     {
         return "get_call_graph not yet implemented";
     }
 
     std::string get_flat_profile(const bool sort = true)
+        __attribute__((no_instrument_function))
     {
         if (sort) {
             // Convert the map to a list.
@@ -114,12 +120,14 @@ public:
     }
 
     void print_call_graph(std::ostream &output_stream = std::clog)
+        __attribute__((no_instrument_function))
     {
         output_stream << get_call_graph() << std::endl;
     }
 
     void print_flat_profile(std::ostream &output_stream = std::clog,
                             const bool sort = true)
+        __attribute__((no_instrument_function))
     {
         output_stream << get_flat_profile(sort) << std::endl;
     }
@@ -130,6 +138,7 @@ protected:
         Type minimum, maximum, total;
 
         min_max_total& operator+=(const Type &value)
+            __attribute__((no_instrument_function))
         {
             if (value < minimum) minimum = value;
             if (value > maximum) maximum = value;
@@ -147,7 +156,7 @@ protected:
             min_max_total<boost::posix_time::time_duration> child;
         } duration;
 
-        call_info_struct() : call_count(0)
+        call_info_struct() __attribute__((no_instrument_function)) : call_count(0)
         {
             duration.self.minimum = boost::posix_time::pos_infin;
             duration.self.maximum = boost::posix_time::neg_infin;
@@ -156,6 +165,7 @@ protected:
         }
 
         call_info_struct& operator+=(const call_frame_struct &frame)
+            __attribute__((no_instrument_function))
         {
             call_count++;
             duration.self += frame.self_duration;   ///< Applies min/max too.
@@ -177,12 +187,14 @@ protected:
 
         call_frame_struct(const std::string &section_id,
                           const boost::posix_time::ptime &start_time = now())
+            __attribute__((no_instrument_function))
             : section_id(section_id), start_time(start_time)
         {
 
         }
 
         boost::posix_time::time_duration total_duration() const
+            __attribute__((no_instrument_function))
         {
             return self_duration + child_duration;
         }
@@ -191,30 +203,33 @@ protected:
 
     boost::thread_specific_ptr<std::stack<call_frame> > call_stack;
 
-    profile_decorator()
+    profile_decorator() __attribute__((no_instrument_function))
     {
 
     }
 
     static bool compare_total_self_duration(const typename call_info_map::value_type &first,
                                             const typename call_info_map::value_type &second)
+        __attribute__((no_instrument_function))
     {
         return (first.second.duration.self.total < second.second.duration.self.total);
     }
 
     static std::string accumulate(const std::string &prefix,
                                   const typename call_info_map::value_type &pair)
+        __attribute__((no_instrument_function))
     {
         return prefix + to_string(pair) + '\n';
     }
 
-    static boost::posix_time::ptime now()
+    static boost::posix_time::ptime now() __attribute__((no_instrument_function))
     {
         return boost::posix_time::microsec_clock::universal_time();
     }
 
     template<class CollectionType>
     static std::string to_string(const CollectionType &collection)
+        __attribute__((no_instrument_function))
     {
         return
             " calls   minSelf   avgSelf   maxSelf   ttlSelf  minChild  avgChild  maxChild  ttlChild\n" +
@@ -222,11 +237,13 @@ protected:
     }
 
     static std::string to_string(const typename call_info_map::value_type &pair)
+        __attribute__((no_instrument_function))
     {
         return to_string(pair.first, pair.second);
     }
 
     static std::string to_string(const std::string &call_id, const call_info &call_info)
+        __attribute__((no_instrument_function))
     {
         std::ostringstream result;
         result << std::setw(6) << call_info.call_count      << ' '
@@ -245,6 +262,7 @@ protected:
     static std::string section_id(const std::string &file, const int line,
                                   const std::string &function,
                                   const std::string &section_name)
+        __attribute__((no_instrument_function))
     {
         std::ostringstream section_id;
         section_id << file << ':' << line << ':' << function;

@@ -20,11 +20,11 @@ public:
 
     static log_decorator * get_instance() __attribute__((no_instrument_function));
 
-
     void begin(const std::string &file, const int line,
                const std::string &function,
                const std::string &section = std::string(),
                const operation_type operation = generic_operation)
+        __attribute__((no_instrument_function))
     {
         if (output_stream) {
             *output_stream
@@ -40,7 +40,7 @@ public:
         Base::begin(file, line, function, section, operation);
     }
 
-    void end()
+    void end() __attribute__((no_instrument_function))
     {
         if (current_depth > 0) {
             current_depth--;
@@ -48,13 +48,14 @@ public:
         Base::end();
     }
 
-    void reset()
+    void reset() __attribute__((no_instrument_function))
     {
         current_depth = 0;
         Base::reset();
     }
 
     std::string set_indent_string(const std::string &new_indent)
+        __attribute__((no_instrument_function))
     {
         const std::string previous_indent = indent_string;
         indent_string = new_indent;
@@ -62,6 +63,7 @@ public:
     }
 
     std::ostream * set_output_stream(std::ostream * const stream)
+        __attribute__((no_instrument_function))
     {
         std::ostream * const previous_stream = output_stream;
         output_stream = stream;
@@ -73,7 +75,7 @@ protected:
     std::string indent_string;
     std::ostream * output_stream;
 
-    log_decorator() :
+    log_decorator() __attribute__((no_instrument_function)) :
         current_depth(0),
         indent_string(" "),
         output_stream(&std::clog)

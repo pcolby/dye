@@ -23,11 +23,12 @@ class basic_dye {
 
 public:
     void begin(const std::string &, const int, const std::string &,
-               const std::string &, const operation_type) const throw() {}
+               const std::string &, const operation_type) const throw()
+        __attribute__((no_instrument_function)) {}
 
-    void end()   const throw() {}
+    void end()   const throw() __attribute__((no_instrument_function)) {}
 
-    void reset() const throw() {}
+    void reset() const throw() __attribute__((no_instrument_function)) {}
 
 protected:
     basic_dye() throw() {}

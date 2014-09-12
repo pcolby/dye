@@ -8,9 +8,10 @@ before_install:
   - sudo apt-get update -qq
 
 install:
-  - sudo apt-get install -qq libboost-date-time-dev libboost-system-dev libboost-thread-dev
+  - sudo apt-get install -qq cppcheck libboost-date-time-dev libboost-system-dev libboost-thread-dev
 
 script:
+  - cppcheck --error-exitcode=1 --quiet .
   - mkdir -p build
   - pushd build
   - cmake ..

@@ -9,6 +9,12 @@
 
 #include "scope_guard.hpp"
 
+#define DYE_CONCAT(left, right) \
+    left##right
+
+#define DYE_EXPAND_AND_CONCAT(left, right) \
+    DYE_CONCAT(left, right)
+
 /**
  * @brief UUID to protect against variable name clashes.
  *
@@ -23,20 +29,23 @@
  * Note, there's nothing special about this UUID - it was generated via the
  * OSSP uuid command-line tool.  It may be replaced at any time.
  */
-#define DYE_MACRO_UUID 4029617a-ebbc-11e3-a02d-080027989a56
+#define DYE_MACRO_UUID 4029617a_ebbc_11e3_a02d_080027989a56
+
+#define DYE_APPEND_UUID(prefix) \
+    DYE_EXPAND_AND_CONCAT(prefix, DYE_MACRO_UUID)
 
 #define DYE_BEGIN_SCOPE(...) \
-    dye::scope_guard<dye::dye_type,int> dye_scope_guard_##DYE_MACRO_UUID=0; \
+    dye::scope_guard<dye::dye_type,int> DYE_APPEND_UUID(dye_scope_guard_)=0; \
     dye::dye_type::get_instance()->begin(__FILE__, __LINE__, __PRETTY_FUNCTION__, ##__VA_ARGS__); \
-    ++dye_scope_guard_##DYE_MACRO_UUID;
+    ++DYE_APPEND_UUID(dye_scope_guard_);
 
 #define DYE_BEGIN_SECTION(...) \
     dye::dye_type::get_instance()->begin(__FILE__, __LINE__, __PRETTY_FUNCTION__, ##__VA_ARGS__); \
-    ++dye_scope_guard_##DYE_MACRO_UUID;
+    ++DYE_APPEND_UUID(dye_scope_guard_);
 
 #define DYE_END_SECTION() \
     dye::dye_type::get_instance()->end(); \
-    --dye_scope_guard_##DYE_MACRO_UUID;
+    --DYE_APPEND_UUID(dye_scope_guard_);
 
 #define DYE_DECLARE_TYPE(type) \
     namespace dye { typedef type dye_type; }
@@ -45,12 +54,12 @@
     namespace dye { template<> dye_type * dye_type::instance(new dye::dye_type); }
 
 #define DYE_DECLARE_ATEXIT_FUNCTION(method, ...) \
-    void dye_##method##_atexit_##DYE_MACRO_UUID() { \
+    void DYE_APPEND_UUID(dye_##method##_atexit_)() { \
         dye::dye_type::get_instance()->method(##__VA_ARGS__); \
     }
 
 #define DYE_REGISTER_ATEXIT_FUNCTION(method) \
-    atexit(dye_##method##_atexit_##DYE_MACRO_UUID)
+    atexit(DYE_APPEND_UUID(dye_##method##_atexit_))
 
 #else
 

@@ -1,5 +1,5 @@
 # Dye
-[![Build Status](http://api.travis-ci.org/pcolby/dye.svg)](https://travis-ci.org/pcolby/dye)
+[![Build Status](http://api.travis-ci.org/pcolby/dye.svg?branch=master)](https://travis-ci.org/pcolby/dye)
 [![Github Issues](http://img.shields.io/github/issues/pcolby/dye.svg)](https://github.com/pcolby/dye/issues)
 [![Boost License](http://img.shields.io/badge/license-boost-blue.svg)](https://www.boost.org/users/license.html)
 ![Project Status](http://img.shields.io/badge/status-evolving-yellow.svg)

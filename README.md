@@ -1,4 +1,8 @@
 # Dye
+[![Build Status](http://api.travis-ci.org/pcolby/dye.svg)](https://travis-ci.org/pcolby/dye)
+[![Github Issues](http://img.shields.io/github/issues/pcolby/dye.svg)](https://github.com/pcolby/dye/issues)
+[![Boost License](http://img.shields.io/badge/license-boost-blue.svg)](https://www.boost.org/users/license.html)
+![Project Status](http://img.shields.io/badge/status-evolving-yellow.svg)
 
 Dye is an extensible, header-only library for tracing C++ code execution via
 manual and/or compiler-assisted instrumentation.  Extensibility is provided by
@@ -45,6 +49,6 @@ make
 
 * Additional examples:
   * custom-decorator
-  * shared-libray
+  * shared-library
 * Add New Relic support (via the [Agent SDK](https://docs.newrelic.com/docs/agent-sdk/agent-sdk))
 * Lots of documentation.

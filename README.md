@@ -21,7 +21,7 @@ Extension | Requirements
 ----------|----------------------------
 logger    | No additional requirements.
 new_relic | New Relic Agent SDK
-profiler  | Boost C++ Libraries (Data Time, System, Thread)
+profiler  | Boost C++ Libraries (Date Time, System, Thread)
 
 Also, the optional compiler-assisted instrumentation depends on compiler-
 specific extensions, such as gcc's `-finstrument-functions` option (also
